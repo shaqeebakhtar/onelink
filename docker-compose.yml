@@ -1,17 +1,20 @@
 version: '3.8'
 
 services:
-  postgres:
+  db:
     container_name: onelinkdb
-    image: postgres:15
-    volumes:
-      - onelinkdata:/var/lib/postgresql/data
+    image: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
     ports:
-      - '5500:5432'
+      - 5500:3306
+    volumes:
+      - onelinkdata:/var/lib/mysql
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_DB: onelink
-      POSTGRES_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: onelink
+      MYSQL_USER: onelinkadmin
+      MYSQL_PASSWORD: onelinkadminpass
 
 volumes:
   onelinkdata:
