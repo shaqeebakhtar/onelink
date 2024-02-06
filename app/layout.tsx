@@ -7,7 +7,7 @@ import Providers from './providers';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'OneLink',
+  title: 'Onelink',
   description:
     'Create a personalized landing page with all your important links that you want to share with your audience',
 };
@@ -22,7 +22,7 @@ export default function RootLayout({
       <Providers>
         <body
           className={cn(
-            'min-h-screen bg-gray-50 text-foreground font-sans antialiased',
+            'min-h-screen bg-gray-50 text-foreground',
             inter.className
           )}
         >
