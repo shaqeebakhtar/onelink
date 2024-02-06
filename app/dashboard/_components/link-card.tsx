@@ -1,13 +1,31 @@
 import { Switch } from '@/components/ui/switch';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { BarChart, GripVertical } from 'lucide-react';
 import Link from 'next/link';
 import CopyLinkButton from './copy-link-button';
 import LinkCardDropdown from './link-card-dropdown';
 
-const LinkCard = () => {
+type LinkCardProps = {
+  id: string;
+};
+
+const LinkCard = ({ id }: LinkCardProps) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
-    <div className="flex items-center rounded-2xl shadow bg-background p-6 pl-2 pb-5 gap-4">
-      <div className="cursor-grab">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="flex items-center rounded-2xl shadow bg-background p-6 pl-2 pb-5 gap-4"
+    >
+      <div className="cursor-grab" {...attributes} {...listeners}>
         <GripVertical
           className="w-5 h-5 text-gray-500 mb-1"
           strokeWidth={1.5}
@@ -17,7 +35,7 @@ const LinkCard = () => {
         <div className="flex items-start justify-between">
           <div className="space-y-1">
             <p className="text-sm font-semibold w-full max-w-56 md:max-w-[340px] lg:max-w-[480px] truncate">
-              Top Interview 150 - Study Plan - LeetCode
+              {id} Top Interview 150 - Study Plan - LeetCode
             </p>
             <p className="w-full max-w-56 md:max-w-[340px] lg:max-w-[480px] truncate">
               <Link
