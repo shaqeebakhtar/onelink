@@ -13,7 +13,7 @@ const MobilePreviewDrawer = () => {
           </Button>
         </div>
       </DrawerTrigger>
-      <DrawerContent className="h-[calc(100vh-48px)]">
+      <DrawerContent className="h-[calc(100vh-32px)]">
         <div className="grid place-items-center px-2 py-3 w-full h-full overflow-hidden">
           <iframe
             className="w-full h-full border-none rounded-2xl"

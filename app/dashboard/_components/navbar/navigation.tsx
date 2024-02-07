@@ -9,7 +9,7 @@ const Navigation = () => {
     <nav className="flex h-full items-center space-x-1">
       <Link className="relative" href="/dashboard">
         <div className={navStyle}>Links</div>
-        <div className="absolute bottom-0 lg:-bottom-3 w-full px-1.5">
+        <div className="absolute bottom-0 md:-bottom-3 w-full px-1.5">
           <div className="h-0.5 bg-black"></div>
         </div>
       </Link>
