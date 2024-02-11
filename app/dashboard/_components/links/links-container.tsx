@@ -1,11 +1,11 @@
 'use client';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
-import React from 'react';
+import React, { useId, useState } from 'react';
 import LinkCard from './link-card';
 
 const LinksContainer = () => {
-  const [items, setItems] = React.useState(['1', '2', '3', '4']);
+  const [items, setItems] = useState(['1', '2', '3', '4']);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -20,8 +20,10 @@ const LinksContainer = () => {
     }
   };
 
+  const id = useId();
+
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext onDragEnd={handleDragEnd} id={id}>
       <div className="space-y-4 pb-40">
         <SortableContext items={items}>
           {items.map((id) => (
