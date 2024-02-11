@@ -22,8 +22,8 @@ export default function RootLayout({
       <Providers>
         <body
           className={cn(
-            'min-h-screen bg-gray-50 text-foreground',
-            inter.className
+            inter.className,
+            'min-h-screen bg-gray-50 text-foreground'
           )}
         >
           {children}

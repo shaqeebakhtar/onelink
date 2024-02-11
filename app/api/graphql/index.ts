@@ -1,11 +1,15 @@
-import { helloQuery, helloTypes } from './routes/hello';
+import { linkQuery, linkTypes, linkMutation } from './routes/link';
 
 export const typeDefs = `
-    ${helloTypes}
+    ${linkTypes}
 `;
 
 export const resolvers = {
   Query: {
-    ...helloQuery,
+    ...linkQuery,
+  },
+
+  Mutation: {
+    ...linkMutation,
   },
 };
