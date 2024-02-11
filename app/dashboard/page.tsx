@@ -1,8 +1,9 @@
 import { Button } from '@/components/ui/button';
-import LinksContainer from './_components/links-container';
-import PreviewContainer from './_components/preview-container';
+import LinksContainer from './_components/links/links-container';
+import PreviewContainer from './_components/preview/preview-container';
 import { Plus } from 'lucide-react';
 import { Metadata } from 'next';
+import AddNewLinkButton from './_components/links/add-new-link-button';
 
 export const metadata: Metadata = {
   title: 'Onelink | Dashboard - Links',
@@ -15,10 +16,7 @@ const Dashboard = () => {
         <div className="max-w-screen-md mx-auto px-3 lg:px-8">
           <div className="h-28 flex items-center justify-between">
             <h1 className="text-2xl font-semibold">Links</h1>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Add new link
-            </Button>
+            <AddNewLinkButton />
           </div>
           <LinksContainer />
         </div>
