@@ -58,8 +58,10 @@ const AddNewLinkForm = () => {
       className="scrollbar-hide overflow-auto h-full max-h-[90vh]"
       onScroll={handleScroll}
     >
-      <DialogHeader className="sticky border-b top-0 left-0 right-0 bg-white px-6 py-6 md:px-10 md:pt-10">
-        <DialogTitle className="text-left">Add a new link</DialogTitle>
+      <DialogHeader className="md:sticky border-b top-0 left-0 right-0 bg-white px-6 py-6 md:px-10 md:pt-10">
+        <DialogTitle className="text-center md:text-left">
+          Add a new link
+        </DialogTitle>
       </DialogHeader>
 
       <Form {...form}>
@@ -139,7 +141,7 @@ const AddNewLinkForm = () => {
                     <RadioGroup
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      className="flex gap-2 justify-between"
+                      className="flex flex-col md:flex-row gap-2 justify-between"
                     >
                       <div className="flex-1">
                         <RadioGroupItem
@@ -183,7 +185,7 @@ const AddNewLinkForm = () => {
 
           <div
             className={cn(
-              'sticky border-t bottom-0 z-10 bg-white px-6 md:px-10 py-8',
+              'sticky border-t bottom-0 z-10 bg-white px-6 md:px-10 py-6 md:py-8',
               !atBottom && 'shadow-[0_-24px_40px_-12px_rgba(0,0,0,0.1)]'
             )}
           >
