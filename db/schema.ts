@@ -5,6 +5,8 @@ import {
   primaryKey,
   varchar,
   mysqlEnum,
+  serial,
+  boolean,
 } from 'drizzle-orm/mysql-core';
 import type { AdapterAccount } from '@auth/core/adapters';
 
@@ -49,11 +51,14 @@ export const accounts = mysqlTable(
 );
 
 export const links = mysqlTable('link', {
-  id: varchar('id', { length: 255 }).notNull().primaryKey(),
+  id: serial('id').notNull().primaryKey(),
   url: varchar('url', { length: 255 }).notNull(),
   title: varchar('title', { length: 255 }),
   layout: mysqlEnum('layout', ['compact', 'highlight']).default('compact'),
-  thumnail_url: varchar('thumbnail_url', { length: 255 }),
+  thumbnailUrl: varchar('thumbnailUrl', { length: 255 }),
+  favicon: varchar('favicon', { length: 255 }),
+  description: varchar('description', { length: 255 }),
+  enabled: boolean('enabled').default(true),
 });
 
 export type Link = typeof links.$inferSelect;

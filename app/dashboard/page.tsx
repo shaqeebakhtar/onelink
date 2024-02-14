@@ -1,9 +1,7 @@
-import { Button } from '@/components/ui/button';
-import LinksContainer from './_components/links/links-container';
-import PreviewContainer from './_components/preview/preview-container';
-import { Plus } from 'lucide-react';
 import { Metadata } from 'next';
 import AddNewLinkButton from './_components/links/add-new-link-button';
+import LinksContainer from './_components/links/links-container';
+import PreviewContainer from './_components/preview/preview-container';
 
 export const metadata: Metadata = {
   title: 'Onelink | Dashboard - Links',

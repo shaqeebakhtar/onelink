@@ -19,16 +19,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Providers>
-        <body
-          className={cn(
-            inter.className,
-            'min-h-screen bg-gray-50 text-foreground'
-          )}
-        >
-          {children}
-        </body>
-      </Providers>
+      {/* <Providers> */}
+      <body
+        className={cn(
+          inter.className,
+          'min-h-screen bg-gray-50 text-foreground'
+        )}
+      >
+        {children}
+      </body>
+      {/* </Providers> */}
     </html>
   );
 }
