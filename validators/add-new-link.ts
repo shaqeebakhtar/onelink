@@ -9,5 +9,4 @@ export const addNewLinkSchema = z.object({
     .min(2, { message: 'Title must be atleast 2 character(s)' })
     .optional(),
   layout: z.enum(['compact', 'highlight']).optional(),
-  thumbnailUrl: z.string().optional(),
 });

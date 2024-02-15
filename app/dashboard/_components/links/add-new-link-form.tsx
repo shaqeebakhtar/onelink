@@ -23,11 +23,16 @@ import { UIEvent, useCallback, useState, useTransition } from 'react';
 import { addNewLinkSchema } from '@/validators/add-new-link';
 import { getLinkMetaData } from '@/actions/links';
 import Image from 'next/image';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addNewLink } from '@/data-access/links';
 
 const AddNewLinkForm = () => {
   const [isFetching, startTransition] = useTransition();
-  const [imageUrl, setImageUrl] = useState('');
+  const [thumbnailUrl, setThumbnailUrl] = useState('');
+  const [linkDescription, setLinkDescription] = useState('');
+  const [linkFavicon, setLinkFavicon] = useState('');
   const [atBottom, setAtBottom] = useState(true);
+
   const handleScroll = useCallback((event: UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
     if (Math.abs(scrollHeight - scrollTop - clientHeight) < 5) {
@@ -42,13 +47,24 @@ const AddNewLinkForm = () => {
     defaultValues: {
       url: '',
       title: '',
-      thumbnailUrl: '',
       layout: 'compact',
     },
   });
 
+  const queryClient = useQueryClient();
+
+  const addLinkMutation = useMutation({
+    mutationFn: addNewLink,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['links'] }),
+  });
+
   const onSubmit = (values: z.infer<typeof addNewLinkSchema>) => {
-    console.log(values);
+    addLinkMutation.mutate({
+      ...values,
+      thumbnailUrl,
+      favicon: linkFavicon,
+      description: linkDescription,
+    });
   };
 
   const onLinkChange = () => {
@@ -61,12 +77,13 @@ const AddNewLinkForm = () => {
     startTransition(async () => {
       const linkMetaData = await getLinkMetaData(urlValidation.data);
 
-      console.log(linkMetaData.title);
-
-      !linkForm.getValues('title') &&
+      if (!linkForm.getValues('title'))
         linkForm.setValue('title', linkMetaData.title);
 
-      setImageUrl(linkMetaData.images[0]);
+      if (!thumbnailUrl) setThumbnailUrl(linkMetaData.images[0]);
+
+      setLinkDescription(linkMetaData.description);
+      setLinkFavicon(linkMetaData.favicon);
     });
   };
 
@@ -125,7 +142,7 @@ const AddNewLinkForm = () => {
               )}
             />
             <div className="flex items-center gap-4">
-              {!imageUrl ? (
+              {!thumbnailUrl ? (
                 <div className="grid place-items-center bg-gray-50 border rounded-md w-32 aspect-square">
                   <ImageIcon
                     className="w-8 h-8 text-gray-400"
@@ -135,7 +152,7 @@ const AddNewLinkForm = () => {
               ) : (
                 <div className="border rounded-md w-32 aspect-square overflow-hidden">
                   <Image
-                    src={imageUrl}
+                    src={thumbnailUrl}
                     width={320}
                     height={240}
                     alt={''}
@@ -143,28 +160,19 @@ const AddNewLinkForm = () => {
                   />
                 </div>
               )}
-              <FormField
-                control={linkForm.control}
-                name="thumbnailUrl"
-                render={({ field }) => (
-                  <FormItem className="space-y-0.5 w-1/2">
-                    <FormLabel>Set Thumbnail</FormLabel>
-                    <FormControl>
-                      <div className="flex flex-col space-y-2">
-                        <Input {...field} type="file" className="h-10 hidden" />
-                        <Button type="button" className="w-full">
-                          Change
-                        </Button>
-                        <Button type="button" variant={'outline'}>
-                          <Trash2 className="text-gray-500 w-4 h-4 mr-2" />
-                          Remove
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="space-y-0.5 w-1/2">
+                <label className="text-sm font-medium">Set Thumbnail</label>
+                <div className="flex flex-col space-y-2">
+                  <Input type="file" className="h-10 hidden" />
+                  <Button type="button" className="w-full">
+                    Change
+                  </Button>
+                  <Button type="button" variant={'outline'}>
+                    <Trash2 className="text-gray-500 w-4 h-4 mr-2" />
+                    Remove
+                  </Button>
+                </div>
+              </div>
             </div>
             <FormField
               control={linkForm.control}
@@ -224,7 +232,14 @@ const AddNewLinkForm = () => {
               !atBottom && 'shadow-[0_-24px_40px_-12px_rgba(0,0,0,0.1)]'
             )}
           >
-            <Button className="w-full h-10" type="submit">
+            <Button
+              className="w-full h-10"
+              type="submit"
+              disabled={addLinkMutation.isPending}
+            >
+              {addLinkMutation.isPending && (
+                <Loader className="w-4 h-4 animate-spin mr-2" />
+              )}
               Add link
             </Button>
           </div>

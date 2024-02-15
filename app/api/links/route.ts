@@ -1,5 +1,4 @@
 import { linkService } from '@/services/links';
-import { addNewLinkSchema } from '@/validators/add-new-link';
 import { NextResponse } from 'next/server';
 
 export const GET = async () => {
@@ -11,16 +10,7 @@ export const GET = async () => {
 export const POST = async (req: Request) => {
   const body = await req.json();
 
-  const validation = addNewLinkSchema.safeParse(body);
-
-  if (!validation.success) {
-    return NextResponse.json(
-      { error: validation.error.issues },
-      { status: 400 }
-    );
-  }
-
-  const { url, title, layout, thumbnailUrl } = validation.data;
+  const { url, title, layout, thumbnailUrl, favicon, description } = body;
 
   if (!url) {
     return NextResponse.json(
@@ -34,6 +24,8 @@ export const POST = async (req: Request) => {
     title,
     layout,
     thumbnailUrl,
+    favicon,
+    description,
   });
 
   return NextResponse.json(response);
