@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const Navigation = () => {
   const navStyle =
-    'm-1 rounded-sm px-2 md:px-3 py-1.5 transition-all duration-75 hover:bg-gray-100 font-medium text-gray-500 hover:text-black text-sm md:text-base';
+    'm-1 rounded-sm px-2 md:px-3 py-1.5 transition-all duration-75 hover:bg-gray-100 font-medium text-gray-500 hover:text-black text-sm';
 
   return (
     <nav className="flex h-full items-center space-x-1">
