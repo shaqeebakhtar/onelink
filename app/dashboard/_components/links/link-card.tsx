@@ -50,7 +50,7 @@ const LinkCard = ({ link }: LinkCardProps) => {
               </Link>
             </p>
           </div>
-          <Switch />
+          <Switch checked={link.enabled!} />
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
