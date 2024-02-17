@@ -5,13 +5,15 @@ import { Plus } from 'lucide-react';
 import AddNewLinkForm from './add-new-link-form';
 import { useMediaQuery } from 'usehooks-ts';
 import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { useState } from 'react';
 
 const AddNewLinkButton = () => {
   const destopOrTab = useMediaQuery('(min-width: 768px)');
+  const [isOpen, setIsOpen] = useState(false);
 
   if (destopOrTab) {
     return (
-      <Dialog>
+      <Dialog onOpenChange={setIsOpen} open={isOpen}>
         <DialogTrigger asChild>
           <Button className="h-10">
             <Plus className="w-4 h-4 mr-2" />
@@ -19,14 +21,14 @@ const AddNewLinkButton = () => {
           </Button>
         </DialogTrigger>
         <DialogContent className="w-full max-w-[580px] rounded-2xl md:rounded-2xl p-0 overflow-hidden">
-          <AddNewLinkForm />
+          <AddNewLinkForm setIsOpen={setIsOpen} />
         </DialogContent>
       </Dialog>
     );
   }
 
   return (
-    <Drawer>
+    <Drawer open={isOpen} onOpenChange={setIsOpen}>
       <DrawerTrigger asChild>
         <Button className="h-10">
           <Plus className="w-4 h-4 mr-2" />
@@ -34,7 +36,7 @@ const AddNewLinkButton = () => {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="h-[calc(100vh-32px)]">
-        <AddNewLinkForm />
+        <AddNewLinkForm setIsOpen={setIsOpen} />
       </DrawerContent>
     </Drawer>
   );

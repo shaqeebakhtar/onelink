@@ -19,14 +19,25 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { cn } from '@/lib/utils';
 import { ImageIcon, Loader, Trash2 } from 'lucide-react';
-import { UIEvent, useCallback, useState, useTransition } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  UIEvent,
+  useCallback,
+  useState,
+  useTransition,
+} from 'react';
 import { addNewLinkSchema } from '@/validators/add-new-link';
 import { getLinkMetaData } from '@/actions/links';
 import Image from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addNewLink } from '@/data-access/links';
 
-const AddNewLinkForm = () => {
+type AddNewLinkFormProps = {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+const AddNewLinkForm = ({ setIsOpen }: AddNewLinkFormProps) => {
   const [isFetching, startTransition] = useTransition();
   const [thumbnailUrl, setThumbnailUrl] = useState('');
   const [linkDescription, setLinkDescription] = useState('');
@@ -55,7 +66,10 @@ const AddNewLinkForm = () => {
 
   const addLinkMutation = useMutation({
     mutationFn: addNewLink,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['links'] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['links'] });
+      setIsOpen(false);
+    },
   });
 
   const onSubmit = (values: z.infer<typeof addNewLinkSchema>) => {
