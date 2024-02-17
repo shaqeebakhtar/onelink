@@ -13,12 +13,18 @@ const Navbar = () => {
         <Link href="/dashboard">
           <Icons.logo />
         </Link>
-        {destopOrTab && <Navigation />}
+        <div className="hidden md:block">
+          <Navigation />
+        </div>
         <div className="flex items-center space-x-2">
           <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
         </div>
       </div>
-      {!destopOrTab && <Navigation />}
+      {!destopOrTab && (
+        <div className="md:hidden">
+          <Navigation />
+        </div>
+      )}
     </header>
   );
 };

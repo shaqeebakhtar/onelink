@@ -6,7 +6,7 @@ const MobilePreviewDrawer = () => {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <div className="fixed left-1/2 -translate-x-1/2 bottom-8">
+        <div className="fixed left-1/2 -translate-x-1/2 bottom-8 md:hidden">
           <Button className="shadow rounded-full px-5 h-11 bg-gray-200 text-foreground hover:bg-primary hover:text-primary-foreground">
             <Eye className="w-5 h-5 mr-2" strokeWidth={1.5} />
             <span className="text-base font-medium">Preview</span>

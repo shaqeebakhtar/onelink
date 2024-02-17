@@ -5,12 +5,15 @@ import { BarChart, GripVertical } from 'lucide-react';
 import Link from 'next/link';
 import CopyLinkButton from './copy-link-button';
 import LinkCardDropdown from './link-card-dropdown';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Link as LinkSchema } from '@/db/schema';
 
 type LinkCardProps = {
-  id: string;
+  link: LinkSchema;
 };
 
-const LinkCard = ({ id }: LinkCardProps) => {
+const LinkCard = ({ link }: LinkCardProps) => {
+  const id = link.id;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
 
@@ -35,15 +38,15 @@ const LinkCard = ({ id }: LinkCardProps) => {
         <div className="flex items-start justify-between">
           <div className="space-y-1">
             <p className="text-sm font-semibold w-full max-w-56 md:max-w-[340px] lg:max-w-[480px] truncate">
-              {id} Top Interview 150 - Study Plan - LeetCode
+              {link.title}
             </p>
             <p className="w-full max-w-56 md:max-w-[340px] lg:max-w-[480px] truncate">
               <Link
                 target="_blank"
-                href={`https://leetcode.com/studyplan/top-interview-150/`}
+                href={link.url}
                 className="text-sm font-medium  text-gray-700 hover:text-primary hover:underline"
               >
-                https://leetcode.com/studyplan/top-interview-150/
+                {link.url}
               </Link>
             </p>
           </div>
@@ -56,9 +59,9 @@ const LinkCard = ({ id }: LinkCardProps) => {
               className="flex items-center space-x-1 rounded bg-gray-100 px-2 py-0.5 text-gray-500 hover:text-gray-900"
             >
               <BarChart className="w-4 h-4" />
-              <span className="text-sm">1 clicks</span>
+              <span className="text-sm">0 clicks</span>
             </Link>
-            <CopyLinkButton value="test-link" />
+            <CopyLinkButton value={link.url} />
           </div>
           <LinkCardDropdown />
         </div>
@@ -68,3 +71,26 @@ const LinkCard = ({ id }: LinkCardProps) => {
 };
 
 export default LinkCard;
+
+export const LinkCardSkeleton = () => {
+  return (
+    <div className="flex items-center rounded-2xl shadow bg-background p-6 pb-5 gap-4">
+      <div className="w-full space-y-4">
+        <div className="flex items-start justify-between">
+          <div className="space-y-1">
+            <Skeleton className="h-6 w-[320px]" />
+            <Skeleton className="h-5 w-[280px]" />
+          </div>
+          <Skeleton className="w-12 h-6 rounded-full" />
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Skeleton className="w-24 h-7" />
+            <Skeleton className="w-8 h-8 rounded-full" />
+          </div>
+          <Skeleton className="w-8 h-8" />
+        </div>
+      </div>
+    </div>
+  );
+};
