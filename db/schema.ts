@@ -1,25 +1,37 @@
+import type { AdapterAccount } from '@auth/core/adapters';
 import {
+  bigint,
+  boolean,
+  index,
   int,
-  timestamp,
+  mysqlEnum,
   mysqlTable,
   primaryKey,
-  varchar,
-  mysqlEnum,
   serial,
-  boolean,
+  timestamp,
+  varchar,
 } from 'drizzle-orm/mysql-core';
-import type { AdapterAccount } from '@auth/core/adapters';
 
-export const users = mysqlTable('user', {
-  id: varchar('id', { length: 255 }).notNull().primaryKey(),
-  name: varchar('name', { length: 255 }),
-  email: varchar('email', { length: 255 }).notNull(),
-  emailVerified: timestamp('emailVerified', {
-    mode: 'date',
-    fsp: 3,
-  }).defaultNow(),
-  image: varchar('image', { length: 255 }),
-});
+export const users = mysqlTable(
+  'user',
+  {
+    id: serial('id').primaryKey(),
+    name: varchar('name', { length: 255 }),
+    username: varchar('username', { length: 16 }).unique(),
+    password: varchar('password', { length: 255 }),
+    email: varchar('email', { length: 255 }).notNull(),
+    emailVerified: timestamp('emailVerified', {
+      mode: 'date',
+      fsp: 3,
+    }).defaultNow(),
+    image: varchar('image', { length: 255 }),
+  },
+  (user) => {
+    return {
+      usernameIdx: index('username_idx').on(user.username),
+    };
+  }
+);
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -27,9 +39,10 @@ export type NewUser = typeof users.$inferInsert;
 export const accounts = mysqlTable(
   'account',
   {
-    userId: varchar('userId', { length: 255 })
-      .notNull()
-      .references(() => users.id, { onDelete: 'cascade' }),
+    userId: bigint('userId', { mode: 'number', unsigned: true }).references(
+      () => users.id,
+      { onDelete: 'cascade' }
+    ),
     type: varchar('type', { length: 255 })
       .$type<AdapterAccount['type']>()
       .notNull(),
@@ -51,7 +64,11 @@ export const accounts = mysqlTable(
 );
 
 export const links = mysqlTable('link', {
-  id: serial('id').notNull().primaryKey(),
+  id: serial('id').primaryKey(),
+  userId: bigint('userId', { mode: 'number', unsigned: true }).references(
+    () => users.id,
+    { onDelete: 'cascade' }
+  ),
   url: varchar('url', { length: 255 }).notNull(),
   title: varchar('title', { length: 255 }),
   layout: mysqlEnum('layout', ['compact', 'highlight']).default('compact'),

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
 import AddNewLinkButton from './_components/links/add-new-link-button';
 import LinksContainer from './_components/links/links-container';
 import PreviewContainer from './_components/preview/preview-container';
@@ -7,7 +8,10 @@ export const metadata: Metadata = {
   title: 'Onelink | Dashboard - Links',
 };
 
-const Dashboard = () => {
+const Dashboard = async () => {
+  const session = await getServerSession();
+  console.log('session: ', session);
+
   return (
     <div className="h-[calc(100vh-65px)] flex">
       <div className="w-full mr-0 lg:mr-[520px] md:mr-72">
