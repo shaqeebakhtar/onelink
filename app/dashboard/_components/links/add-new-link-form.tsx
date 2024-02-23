@@ -27,7 +27,7 @@ import {
   useState,
   useTransition,
 } from 'react';
-import { addNewLinkSchema } from '@/validators/add-new-link';
+import { addNewLinkSchema } from '@/schemas/add-new-link';
 import { getLinkMetaData } from '@/actions/links';
 import Image from 'next/image';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

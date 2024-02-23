@@ -14,12 +14,16 @@ export const authOptions: AuthOptions = {
     CredentialsProvider({
       name: 'Username and Password',
       credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
+        email: {
+          label: 'Username',
+          type: 'email',
+          placeholder: 'jsmith@example.com',
+        },
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials) => {
         const user = await db.query.users.findFirst({
-          where: eq(users.username, credentials?.username as string),
+          where: eq(users.email, credentials?.email as string),
         });
 
         const hashedPassword = await hash(credentials?.password as string);
